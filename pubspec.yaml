@@ -1,0 +1,52 @@
+name: optipaw
+description: "A new Flutter project."
+
+publish_to: 'none' 
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  cupertino_icons: ^1.0.8
+  page_transition: ^2.2.1
+  tflite_v2: ^1.0.0
+  insta_image_viewer: ^1.0.4
+  image_picker: ^1.1.2
+  get: ^4.6.6
+  image: ^4.5.2
+  # tflite: ^1.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+
+
+flutter:
+
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/images/
+    - assets/tflite_model/
+
+  fonts:
+    - family: Quicksand
+      fonts:
+        - asset: assets/fonts/Quicksand-Regular.ttf
+        - asset: assets/fonts/Quicksand-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Quicksand-Medium.ttf
+          weight: 400
+        - asset: assets/fonts/Quicksand-SemiBold.ttf
+          weight: 500
+        - asset: assets/fonts/Quicksand-Bold.ttf
+          weight: 700
