@@ -4,14 +4,15 @@ import 'package:optipaw/constant/styles.dart';
 import 'package:optipaw/utils/goto.dart';
 import 'package:optipaw/views/screens/recommendation.dart';
 import 'package:optipaw/widget/homescreen_widget.dart';
-import 'package:tflite_v2/tflite_v2.dart';
+// import 'package:tflite_v2/tflite_v2.dart';
 
-import 'package:image/image.dart' as img;
+// import 'package:image/image.dart' as img;
 // import 'package:tflite/tflite.dart';
 
 class Results extends StatefulWidget {
   final File? filePath;
   final String label;
+  final String severity;
   final double confidence;
   final String image;
 
@@ -19,6 +20,7 @@ class Results extends StatefulWidget {
       {super.key,
       this.filePath,
       required this.label,
+      required this.severity,
       required this.confidence,
       required this.image});
 
@@ -27,54 +29,54 @@ class Results extends StatefulWidget {
 }
 
 class _ResultsState extends State<Results> {
-  String severity = '';
+  // String severity = '';
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    loadSeverityModel();
+    // loadSeverityModel();
     // runSeverity();
   }
 
-  Future<String> preprocessImage(String filePath) async {
-    final imageFile = File(filePath);
-    final rawImage = img.decodeImage(await imageFile.readAsBytes());
-    final resizedImage =
-        img.copyResize(rawImage!, width: 224, height: 224); // Adjust size
-    final processedFile = File('${filePath}_processed.jpg')
-      ..writeAsBytesSync(img.encodeJpg(resizedImage));
-    return processedFile.path;
-  }
+  // Future<String> preprocessImage(String filePath) async {
+  //   final imageFile = File(filePath);
+  //   final rawImage = img.decodeImage(await imageFile.readAsBytes());
+  //   final resizedImage =
+  //       img.copyResize(rawImage!, width: 224, height: 224); // Adjust size
+  //   final processedFile = File('${filePath}_processed.jpg')
+  //     ..writeAsBytesSync(img.encodeJpg(resizedImage));
+  //   return processedFile.path;
+  // }
 
-  Future<void> loadSeverityModel() async {
-    // Tflite.close();
-    String? res = await Tflite.loadModel(
-        model: "assets/tflite_model/tflite_model_severity.tflite",
-        labels: "assets/tflite_model/labels1.txt");
-    print("Severity model loaded: $res");
+  // Future<void> loadSeverityModel() async {
+  //   // Tflite.close();
+  //   String? res = await Tflite.loadModel(
+  //       model: "assets/tflite_model/tflite_model_severity.tflite",
+  //       labels: "assets/tflite_model/labels1.txt");
+  //   print("Severity model loaded: $res");
 
-    String preprocessedPath = await preprocessImage(widget.image);
-    print(preprocessedPath);
+  //   String preprocessedPath = await preprocessImage(widget.image);
+  //   print(preprocessedPath);
 
-    var severityResult = await Tflite.runModelOnImage(
-      path: preprocessedPath,
-      numResults: 1,
-      threshold: 0.1,
-      imageMean: 0.0,
-      imageStd: 1.0,
-    );
+  //   var severityResult = await Tflite.runModelOnImage(
+  //     path: preprocessedPath,
+  //     numResults: 1,
+  //     threshold: 0.1,
+  //     imageMean: 0.0,
+  //     imageStd: 1.0,
+  //   );
 
-    setState(() {
-      severity = "Severity is " + severityResult?.first['label'];
-      print(severityResult);
-      print(severity);
-    });
-  }
+  //   setState(() {
+  //     severity = "Severity is " + severityResult?.first['label'];
+  //     print(severityResult);
+  //     print(severity);
+  //   });
+  // }
 
   @override
   void dispose() {
-    Tflite.close();
+    // Tflite.close();
     super.dispose();
   }
 
@@ -168,7 +170,7 @@ class _ResultsState extends State<Results> {
                                 ),
                               ),
                               child: Text(
-                                severity,
+                                "Severity is ${widget.severity}",
                                 style: Styles.textRegular,
                               ),
                             ),
@@ -178,7 +180,11 @@ class _ResultsState extends State<Results> {
                   buttons(
                     () {
                       //Code Here
-                      goToPage(context, const Recommendation(),
+                      goToPage(
+                          context,
+                          Recommendation(
+                            label: widget.label,
+                          ),
                           'rightToLeftWithFade');
                     },
                     'Recommendation',

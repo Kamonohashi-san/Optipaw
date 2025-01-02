@@ -3,7 +3,9 @@ import 'package:optipaw/constant/styles.dart';
 import 'package:optipaw/views/screens/widget/recommendation_widget.dart';
 
 class Recommendation extends StatelessWidget {
-  const Recommendation({super.key});
+  const Recommendation({super.key, required this.label});
+
+  final String label;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class Recommendation extends StatelessWidget {
           child: Column(
             children: [
               recommendationCard(
-                'Minor Cataracs',
+                'Minor $label',
                 [
                   "Observation and Monitoring: In cases where cataracts are small and not significantly affecting vision, your veterinarian may recommend simply monitoring the condition regularly to ensure it doesn't worsen rapidly.",
                   'Nutritional Supplements: Certain nutritional supplements containing antioxidants like vitamin E, vitamin C, and omega-3 fatty acids might be recommended to slow down cataract progression.',
@@ -32,7 +34,7 @@ class Recommendation extends StatelessWidget {
               ),
               Styles.sizedBox,
               recommendationCard(
-                'Major Cataracs',
+                'Major $label',
                 [
                   "Surgical Intervention: Once cataracts start to impair vision significantly, surgery is often the recommended treatment. Phacoemulsification is the most common technique used, where the cloudy lens is broken up and removed, and an artificial intraocular lens (IOL) is implanted.",
                   'Pre-operative Care: Prior to surgery, your veterinarian may conduct pre-operative evaluations to ensure your dog is healthy enough for the procedure. This may involve blood tests, electrocardiograms (ECG), and other diagnostic tests.',
@@ -41,7 +43,7 @@ class Recommendation extends StatelessWidget {
               ),
               Styles.sizedBox,
               recommendationCard(
-                'Critical Cataracs',
+                'Critical $label',
                 [
                   "Immediate Surgical Intervention: In cases where cataracts have progressed to the point of causing complete blindness or significant pain and discomfort, immediate surgical intervention may be necessary to alleviate suffering and restore vision.",
                   'Emergency Care: Critical cataracts may require urgent attention, and your veterinarian may prioritize surgery to address the condition promptly.',

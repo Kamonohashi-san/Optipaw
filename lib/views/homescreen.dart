@@ -21,10 +21,15 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+enum SingleCharacter { restnet, mobilenet, inception }
+
 class _HomeScreenState extends State<HomeScreen> {
+  SingleCharacter? _character = SingleCharacter.restnet;
+
   final TFLiteService _tfliteservice = TFLiteService();
   File? filepath;
   late String label;
+  late String severity;
   double confidence = 0.0;
   late String images;
   var ctime;
@@ -33,7 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _tfliteservice.loadDiseaseModel();
   }
 
   Future<String> preprocessImage(String filePath) async {
@@ -47,8 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   pickImageGallery() async {
-    await _tfliteservice.loadDiseaseModel();
-
+    await _tfliteservice.loadModel(_character);
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
@@ -71,12 +74,20 @@ class _HomeScreenState extends State<HomeScreen> {
       confidence = (diseaseResult?.first['confidence'] * 100);
       images = image.path;
       // print(images);
+    });
 
+    await _tfliteservice.loadSeverityModel(_character);
+    final severityResult =
+        await _tfliteservice.runDiseaseModel(preprocessedPath);
+
+    setState(() {
+      severity = severityResult?.first['label'];
       goToPage(
         context,
         Results(
           filePath: filepath,
           label: label,
+          severity: severity,
           confidence: confidence,
           image: images,
         ),
@@ -86,8 +97,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   pickImageCamera() async {
-    await _tfliteservice.loadDiseaseModel();
-
     final ImagePicker picker = ImagePicker();
     // Pick an image.
     final XFile? image = await picker.pickImage(source: ImageSource.camera);
@@ -111,12 +120,20 @@ class _HomeScreenState extends State<HomeScreen> {
       confidence = (diseaseResult?.first['confidence'] * 100);
       images = image.path;
       // print(images);
+    });
 
+    await _tfliteservice.loadSeverityModel(_character);
+    final severityResult =
+        await _tfliteservice.runDiseaseModel(preprocessedPath);
+
+    setState(() {
+      severity = severityResult?.first['label'];
       goToPage(
         context,
         Results(
           filePath: filepath,
           label: label,
+          severity: severity,
           confidence: confidence,
           image: images,
         ),
@@ -131,6 +148,64 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  Future<void> _showDialog() {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Center(
+            child: Text(
+              'CHOOSE ALGORITHM',
+              style: Styles.textsubHeader,
+            ),
+          ),
+          content: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  RadioListTile<SingleCharacter>(
+                    title: const Text('Restnet'),
+                    value: SingleCharacter.restnet,
+                    groupValue: _character,
+                    onChanged: (SingleCharacter? value) {
+                      setState(() {
+                        _character = value;
+                        Navigator.pop(context);
+                      });
+                    },
+                  ),
+                  RadioListTile<SingleCharacter>(
+                    title: const Text('Mobilenet'),
+                    value: SingleCharacter.mobilenet,
+                    groupValue: _character,
+                    onChanged: (SingleCharacter? value) {
+                      setState(() {
+                        _character = value;
+                        Navigator.pop(context);
+                      });
+                    },
+                  ),
+                  RadioListTile<SingleCharacter>(
+                    title: const Text('Inception'),
+                    value: SingleCharacter.inception,
+                    groupValue: _character,
+                    onChanged: (SingleCharacter? value) {
+                      setState(() {
+                        _character = value;
+                        Navigator.pop(context);
+                      });
+                    },
+                  ),
+                ],
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
@@ -143,14 +218,17 @@ class _HomeScreenState extends State<HomeScreen> {
           'Optipaw',
           style: Styles.textHeader,
         ),
-        // actions: [
-        //   IconButton(
-        //       onPressed: () {},
-        //       icon: const Icon(
-        //         Icons.settings,
-        //         color: Styles.iconColor,
-        //       ))
-        // ],
+        actions: [
+          IconButton(
+            onPressed: () {
+              _showDialog();
+            },
+            icon: const Icon(
+              Icons.change_circle,
+              color: Styles.iconColor,
+            ),
+          ),
+        ],
       ),
       body: Container(
         margin: Styles.defPadding,
