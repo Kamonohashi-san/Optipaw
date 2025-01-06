@@ -16,13 +16,13 @@ class TFLiteService {
         break;
       case SingleCharacter.mobilenet:
         String? res = await Tflite.loadModel(
-            model: "assets/tflite_model/model.tflite",
+            model: "assets/tflite_model/model_mobilenet.tflite",
             labels: "assets/tflite_model/labels.txt");
         print("Disease Mobilenet model loaded: $res");
         break;
       case SingleCharacter.inception:
         String? res = await Tflite.loadModel(
-            model: "assets/tflite_model/model.tflite",
+            model: "assets/tflite_model/model_inception.tflite",
             labels: "assets/tflite_model/labels.txt");
         print("Disease Inception model loaded: $res");
         break;
