@@ -35,19 +35,19 @@ class TFLiteService {
     switch (character) {
       case SingleCharacter.restnet:
         String? res = await Tflite.loadModel(
-            model: "assets/tflite_model/tflite_model_severity.tflite",
+            model: "assets/tflite_model/model_Severity_restnet.tflite",
             labels: "assets/tflite_model/labels1.txt");
         print("Disease Resnet model loaded: $res");
         break;
       case SingleCharacter.mobilenet:
         String? res = await Tflite.loadModel(
-            model: "assets/tflite_model/tflite_model_severity.tflite",
+            model: "assets/tflite_model/model_Severity_restnet.tflite",
             labels: "assets/tflite_model/labels1.txt");
         print("Disease Mobilenet model loaded: $res");
         break;
       case SingleCharacter.inception:
         String? res = await Tflite.loadModel(
-            model: "assets/tflite_model/tflite_model_severity.tflite",
+            model: "assets/tflite_model/model_Severity_restnet.tflite",
             labels: "assets/tflite_model/labels1.txt");
         print("Disease Inception model loaded: $res");
         break;
