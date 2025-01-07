@@ -97,6 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   pickImageCamera() async {
+    await _tfliteservice.loadModel(_character);
     final ImagePicker picker = ImagePicker();
     // Pick an image.
     final XFile? image = await picker.pickImage(source: ImageSource.camera);
