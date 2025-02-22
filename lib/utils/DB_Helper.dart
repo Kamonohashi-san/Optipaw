@@ -30,7 +30,7 @@ class DBHelper {
 
   _onCreate(Database db, int version) async {
     await db.execute(
-        "CREATE TABLE $TABLE ($ID INTEGER PRIMARY KEY, $NAME TEXT NOT NULL, $DATE DATE NOT NULL)");
+        "CREATE TABLE $TABLE ($ID INTEGER, $NAME TEXT NOT NULL, $DATE DATE NOT NULL)");
   }
 
   Future<Photos> save(Photos image) async {

@@ -4,8 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:optipaw/constant/assets.dart';
 import 'package:optipaw/constant/styles.dart';
+import 'package:optipaw/model/image.dart';
 import 'package:optipaw/model/tflite_service.dart';
+import 'package:optipaw/utils/DB_Helper.dart';
+import 'package:optipaw/utils/Utility.dart';
 import 'package:optipaw/utils/goto.dart';
+import 'package:optipaw/views/Pages/History.dart';
 import 'package:optipaw/views/Pages/page1.dart';
 import 'package:optipaw/views/Pages/page2.dart';
 import 'package:optipaw/views/screens/results.dart';
@@ -34,10 +38,13 @@ class _HomeScreenState extends State<HomeScreen> {
   late String images;
   var ctime;
 
+  late DBHelper dbHelper;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    dbHelper = DBHelper();
   }
 
   Future<String> preprocessImage(String filePath) async {
@@ -53,7 +60,17 @@ class _HomeScreenState extends State<HomeScreen> {
   pickImageGallery() async {
     await _tfliteservice.loadModel(_character);
     final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    final XFile? image = await picker
+        .pickImage(source: ImageSource.gallery)
+        .then((imgFile) async {
+      String imgString = Utility.base64String(await imgFile!.readAsBytes());
+      Photos photo = Photos(0, imgString, DateTime.now());
+      dbHelper.save(photo);
+
+      setState(() {
+        print(imgFile.path);
+      });
+    });
 
     if (image == null) return;
 
@@ -226,6 +243,15 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             icon: const Icon(
               Icons.change_circle,
+              color: Styles.iconColor,
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              goToPage(context, History(), 'fade');
+            },
+            icon: const Icon(
+              Icons.history,
               color: Styles.iconColor,
             ),
           ),
