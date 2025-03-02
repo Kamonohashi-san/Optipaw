@@ -184,6 +184,7 @@ class _ResultsState extends State<Results> {
                           context,
                           Recommendation(
                             label: widget.label,
+                            severity: widget.severity,
                           ),
                           'rightToLeftWithFade');
                     },
