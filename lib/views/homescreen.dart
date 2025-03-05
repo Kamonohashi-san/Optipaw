@@ -67,49 +67,49 @@ class _HomeScreenState extends State<HomeScreen> {
       Photos photo = Photos(0, imgString, DateTime.now());
       dbHelper.save(photo);
 
-      // setState(() {
-      //   print(imgFile.path);
-      // });
-
-      if (imgFile == null) return;
-
-      var imageMap = File(imgFile.path);
-
       setState(() {
-        filepath = imageMap;
+        print(imgFile.path);
       });
+    });
 
-      String preprocessedPath = await preprocessImage(imgFile.path);
+    if (image == null) return;
 
-      final diseaseResult =
-          await _tfliteservice.runDiseaseModel(preprocessedPath);
+    var imageMap = File(image.path);
 
-      setState(() {
-        print(diseaseResult);
-        label = diseaseResult?.first['label'];
-        confidence = (diseaseResult?.first['confidence'] * 100);
-        images = imgFile.path;
-        // print(images);
-      });
+    setState(() {
+      filepath = imageMap;
+    });
 
-      await _tfliteservice.loadSeverityModel(_character);
-      final severityResult =
-          await _tfliteservice.runDiseaseModel(preprocessedPath);
+    String preprocessedPath = await preprocessImage(image.path);
 
-      setState(() {
-        severity = severityResult?.first['label'];
-        goToPage(
-          context,
-          Results(
-            filePath: filepath,
-            label: label,
-            severity: severity,
-            confidence: confidence,
-            image: images,
-          ),
-          'leftToRightWithFade',
-        );
-      });
+    final diseaseResult =
+        await _tfliteservice.runDiseaseModel(preprocessedPath);
+
+    setState(() {
+      print(diseaseResult);
+      label = diseaseResult?.first['label'];
+      confidence = (diseaseResult?.first['confidence'] * 100);
+      images = image.path;
+      // print(images);
+    });
+
+    await _tfliteservice.loadSeverityModel(_character);
+    final severityResult =
+        await _tfliteservice.runDiseaseModel(preprocessedPath);
+
+    setState(() {
+      severity = severityResult?.first['label'];
+      goToPage(
+        context,
+        Results(
+          filePath: filepath,
+          label: label,
+          severity: severity,
+          confidence: confidence,
+          image: images,
+        ),
+        'leftToRightWithFade',
+      );
     });
   }
 
@@ -117,52 +117,46 @@ class _HomeScreenState extends State<HomeScreen> {
     await _tfliteservice.loadModel(_character);
     final ImagePicker picker = ImagePicker();
     // Pick an image.
-    final XFile? image = await picker
-        .pickImage(source: ImageSource.camera)
-        .then((imgFile) async {
-      String imgString = Utility.base64String(await imgFile!.readAsBytes());
-      Photos photo = Photos(0, imgString, DateTime.now());
-      dbHelper.save(photo);
+    final XFile? image = await picker.pickImage(source: ImageSource.camera);
 
-      if (imgFile == null) return;
+    if (image == null) return;
 
-      var imageMap = File(imgFile.path);
+    var imageMap = File(image.path);
 
-      setState(() {
-        filepath = imageMap;
-      });
+    setState(() {
+      filepath = imageMap;
+    });
 
-      String preprocessedPath = await preprocessImage(imgFile.path);
+    String preprocessedPath = await preprocessImage(image.path);
 
-      final diseaseResult =
-          await _tfliteservice.runDiseaseModel(preprocessedPath);
+    final diseaseResult =
+        await _tfliteservice.runDiseaseModel(preprocessedPath);
 
-      setState(() {
-        print(diseaseResult);
-        label = diseaseResult?.first['label'];
-        confidence = (diseaseResult?.first['confidence'] * 100);
-        images = imgFile.path;
-        // print(images);
-      });
+    setState(() {
+      print(diseaseResult);
+      label = diseaseResult?.first['label'];
+      confidence = (diseaseResult?.first['confidence'] * 100);
+      images = image.path;
+      // print(images);
+    });
 
-      await _tfliteservice.loadSeverityModel(_character);
-      final severityResult =
-          await _tfliteservice.runDiseaseModel(preprocessedPath);
+    await _tfliteservice.loadSeverityModel(_character);
+    final severityResult =
+        await _tfliteservice.runDiseaseModel(preprocessedPath);
 
-      setState(() {
-        severity = severityResult?.first['label'];
-        goToPage(
-          context,
-          Results(
-            filePath: filepath,
-            label: label,
-            severity: severity,
-            confidence: confidence,
-            image: images,
-          ),
-          'leftToRightWithFade',
-        );
-      });
+    setState(() {
+      severity = severityResult?.first['label'];
+      goToPage(
+        context,
+        Results(
+          filePath: filepath,
+          label: label,
+          severity: severity,
+          confidence: confidence,
+          image: images,
+        ),
+        'leftToRightWithFade',
+      );
     });
   }
 
