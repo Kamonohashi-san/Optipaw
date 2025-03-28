@@ -9,6 +9,9 @@ class DBHelper {
   static Database? _db;
   static const String ID = 'id';
   static const String NAME = 'photoName';
+  static const String SEVERITY = 'severity';
+  static const String DISEASE = 'diseaseName';
+  static const String CONFIDENCE = 'confidence';
   static const String DATE = 'createdAt';
   static const String TABLE = 'HistoryTable';
   static const String DB_NAME = 'history.db';
@@ -29,13 +32,21 @@ class DBHelper {
   }
 
   _onCreate(Database db, int version) async {
-    await db.execute(
-        "CREATE TABLE $TABLE ($ID INTEGER, $NAME TEXT NOT NULL, $DATE DATE NOT NULL)");
+    await db.execute('''
+    CREATE TABLE $TABLE (
+      $ID INTEGER PRIMARY KEY AUTOINCREMENT,
+      $NAME TEXT NOT NULL,
+      $SEVERITY TEXT NOT NULL,
+      $DISEASE TEXT NOT NULL,
+      $CONFIDENCE DOUBLE NOT NULL,
+      $DATE TEXT NOT NULL
+    )
+  ''');
   }
 
   Future<Photos> save(Photos image) async {
     var dbClient = await db;
-    image.id = await dbClient.insert(TABLE, image.toMap());
+    await dbClient.insert(TABLE, image.toMap());
     return image;
 
     // await dbClient.transaction((txn) async {
@@ -46,7 +57,8 @@ class DBHelper {
 
   Future<List<Photos>> getPhotos() async {
     var dbClient = await db;
-    List<Map> maps = await dbClient.query(TABLE, columns: [ID, NAME, DATE]);
+    List<Map> maps = await dbClient
+        .query(TABLE, columns: [ID, NAME, SEVERITY, DISEASE, CONFIDENCE, DATE]);
     List<Photos> images = [];
     if (maps.length > 0) {
       for (int i = 0; i < maps.length; i++) {
