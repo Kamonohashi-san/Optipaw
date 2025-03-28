@@ -1,21 +1,33 @@
 class Photos {
-  int id;
   String photoName;
+  String severity;
+  String diseaseName;
+  double confidence_level;
   DateTime createdAt;
 
-  Photos(this.id, this.photoName, this.createdAt);
+  Photos(
+    this.photoName,
+    this.severity,
+    this.diseaseName,
+    this.confidence_level,
+    this.createdAt,
+  );
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
-      'id': id,
       'photoName': photoName,
+      'severity': severity,
+      'diseaseName': diseaseName,
+      'confidence': confidence_level,
       'createdAt': createdAt.toString()
     };
     return map;
   }
 
   Photos.fromMap(Map<String, dynamic> map)
-      : id = map['id'],
-        photoName = map['photoName'],
+      : photoName = map['photoName'],
+        severity = map['severity'],
+        diseaseName = map['diseaseName'],
+        confidence_level = map['confidence'],
         createdAt = DateTime.parse(map['createdAt']);
 }

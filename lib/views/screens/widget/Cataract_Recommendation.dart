@@ -33,7 +33,7 @@ Widget minorCataract(
                 Styles.sizedBox,
                 //Step2
                 recommendationCard(
-                  steps[2],
+                  steps[1],
                   text[0],
                   [
                     recommendations[4],
@@ -58,7 +58,7 @@ Widget minorCataract(
                 Styles.sizedBox,
                 //Step 3
                 recommendationCard(
-                  steps[3],
+                  steps[2],
                   "",
                   [
                     recommendations[9],

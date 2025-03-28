@@ -64,8 +64,6 @@ class _HomeScreenState extends State<HomeScreen> {
         .pickImage(source: ImageSource.gallery)
         .then((imgFile) async {
       String imgString = Utility.base64String(await imgFile!.readAsBytes());
-      Photos photo = Photos(0, imgString, DateTime.now());
-      dbHelper.save(photo);
 
       // setState(() {
       //   print(imgFile.path);
@@ -94,10 +92,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
       await _tfliteservice.loadSeverityModel(_character);
       final severityResult =
-          await _tfliteservice.runDiseaseModel(preprocessedPath);
+          await _tfliteservice.runSeverityModel(preprocessedPath);
 
       setState(() {
         severity = severityResult?.first['label'];
+        print(severityResult);
         goToPage(
           context,
           Results(
@@ -110,6 +109,10 @@ class _HomeScreenState extends State<HomeScreen> {
           'leftToRightWithFade',
         );
       });
+
+      Photos photo =
+          Photos(imgString, severity, label, confidence, DateTime.now());
+      dbHelper.save(photo);
     });
   }
 
@@ -121,8 +124,6 @@ class _HomeScreenState extends State<HomeScreen> {
         .pickImage(source: ImageSource.camera)
         .then((imgFile) async {
       String imgString = Utility.base64String(await imgFile!.readAsBytes());
-      Photos photo = Photos(0, imgString, DateTime.now());
-      dbHelper.save(photo);
 
       if (imgFile == null) return;
 
@@ -163,6 +164,10 @@ class _HomeScreenState extends State<HomeScreen> {
           'leftToRightWithFade',
         );
       });
+
+      Photos photo =
+          Photos(imgString, severity, label, confidence, DateTime.now());
+      dbHelper.save(photo);
     });
   }
 
