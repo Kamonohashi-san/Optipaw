@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:optipaw/constant/styles.dart';
 import 'package:optipaw/views/screens/widget/Cataract_Recommendation.dart';
 import 'package:optipaw/views/screens/widget/Conjunctivitis_Recommnedation.dart';
-import 'package:optipaw/views/screens/widget/recommendation_widget.dart';
 
 class Recommendation extends StatelessWidget {
   const Recommendation(

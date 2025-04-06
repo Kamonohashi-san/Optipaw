@@ -65,12 +65,6 @@ class _HomeScreenState extends State<HomeScreen> {
         .then((imgFile) async {
       String imgString = Utility.base64String(await imgFile!.readAsBytes());
 
-      // setState(() {
-      //   print(imgFile.path);
-      // });
-
-      if (imgFile == null) return;
-
       var imageMap = File(imgFile.path);
 
       setState(() {
@@ -113,6 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Photos photo =
           Photos(imgString, severity, label, confidence, DateTime.now());
       dbHelper.save(photo);
+      return null;
     });
   }
 
@@ -124,8 +119,6 @@ class _HomeScreenState extends State<HomeScreen> {
         .pickImage(source: ImageSource.camera)
         .then((imgFile) async {
       String imgString = Utility.base64String(await imgFile!.readAsBytes());
-
-      if (imgFile == null) return;
 
       var imageMap = File(imgFile.path);
 
@@ -168,6 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Photos photo =
           Photos(imgString, severity, label, confidence, DateTime.now());
       dbHelper.save(photo);
+      return null;
     });
   }
 

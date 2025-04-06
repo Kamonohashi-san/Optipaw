@@ -1,0 +1,2 @@
+D:/Github/Optipaw/android/app/.cxx/RelWithDebInfo/431r4y2e/armeabi-v7a/CMakeFiles/edit_cache.dir
+D:/Github/Optipaw/android/app/.cxx/RelWithDebInfo/431r4y2e/armeabi-v7a/CMakeFiles/rebuild_cache.dir

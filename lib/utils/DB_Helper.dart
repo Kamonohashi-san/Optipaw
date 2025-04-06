@@ -60,7 +60,7 @@ class DBHelper {
     List<Map> maps = await dbClient
         .query(TABLE, columns: [ID, NAME, SEVERITY, DISEASE, CONFIDENCE, DATE]);
     List<Photos> images = [];
-    if (maps.length > 0) {
+    if (maps.isNotEmpty) {
       for (int i = 0; i < maps.length; i++) {
         images.add(Photos.fromMap(maps[i] as Map<String, dynamic>));
       }

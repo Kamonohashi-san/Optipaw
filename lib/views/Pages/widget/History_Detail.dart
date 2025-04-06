@@ -6,7 +6,7 @@ import 'package:optipaw/utils/Utility.dart';
 class HistoryDetail extends StatelessWidget {
   final Photos photo;
 
-  const HistoryDetail({Key? key, required this.photo}) : super(key: key);
+  const HistoryDetail({super.key, required this.photo});
 
   @override
   Widget build(BuildContext context) {
