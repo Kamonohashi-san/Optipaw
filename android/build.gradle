@@ -1,11 +1,11 @@
 buildscript {
-    ext.kotlin_version = '1.9.10' // Update to the latest version
+    ext.kotlin_version = '1.8.22' // Update to the latest version
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:8.1.0" // Ensure this is compatible with the Kotlin version
+        classpath "com.android.tools.build:gradle:7.3.0" // Ensure this is compatible with the Kotlin version
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.gms:google-services:4.3.10'
     }
@@ -40,6 +40,18 @@ subprojects {
 subprojects {
     project.evaluationDependsOn(":app")
 }
+
+// subprojects {
+//     afterEvaluate { project ->
+//         if (project.hasProperty('android')) {
+//             project.android {
+//                 if (namespace == null) {
+//                     namespace project.group
+//                 }
+//             }
+//         }
+//     }
+// }
 
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
