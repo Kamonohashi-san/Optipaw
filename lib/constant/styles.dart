@@ -8,31 +8,32 @@ mixin Styles {
 
   //TextStyles
   static const textHeader = TextStyle(
-    fontSize: 24,
+    fontSize: 26,
     letterSpacing: 1.2,
     fontFamily: 'Quicksand',
+    fontWeight: FontWeight.w600,
     color: Colors.white,
   );
 
   static const textsubHeader = TextStyle(
-    fontSize: 18,
+    fontSize: 20,
     fontFamily: 'Quicksand',
     color: Colors.black,
   );
 
   static const textBody = TextStyle(
-    fontSize: 15,
+    fontSize: 17,
     fontFamily: 'Quicksand',
     color: Colors.black,
   );
 
   static const textRegular = TextStyle(
-    fontSize: 14,
+    fontSize: 16,
     fontFamily: 'Quicksand',
     color: Colors.black,
   );
   static const buttonText = TextStyle(
-    fontSize: 14,
+    fontSize: 16,
     fontFamily: 'Quicksand',
     color: Colors.white,
   );
