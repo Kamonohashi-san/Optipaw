@@ -37,12 +37,12 @@ class HistoryDetail extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildDetailRow('Disease:', photo.diseaseName),
-                  const SizedBox(height: 12),
-                  _buildDetailRow('Severity:', photo.severity),
-                  const SizedBox(height: 12),
-                  _buildDetailRow('Confidence:',
-                      '${photo.confidence_level.toStringAsFixed(2)}%'),
+                  // _buildDetailRow('Disease:', photo.diseaseName),
+                  // const SizedBox(height: 12),
+                  // _buildDetailRow('Severity:', photo.severity),
+                  // const SizedBox(height: 12),
+                  // _buildDetailRow('Confidence:',
+                  //     '${photo.confidence_level.toStringAsFixed(2)}%'),
                   const SizedBox(height: 12),
                   _buildDetailRow(
                       'Date:', photo.createdAt.toString().split(' ')[0]),

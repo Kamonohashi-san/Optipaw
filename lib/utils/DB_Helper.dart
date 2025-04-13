@@ -11,25 +11,12 @@ class DBHelper {
   static const String NAME = 'photoName';
   static const String SEVERITY = 'severity';
   static const String DISEASE = 'diseaseName';
-  static const String CONFIDENCE = 'confidence';
+  static const String CONFIDENCE = 'confidence_level';
   static const String DATE = 'createdAt';
   static const String TABLE = 'HistoryTable';
   static const String DB_NAME = 'history.db';
 
-  Future<Database> get db async {
-    if (_db != null) {
-      return _db!;
-    }
-    _db = await initDb();
-    return _db!;
-  }
-
-  initDb() async {
-    io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, DB_NAME);
-    var db = await openDatabase(path, version: 1, onCreate: _onCreate);
-    return db;
-  }
+  // ...existing code...
 
   _onCreate(Database db, int version) async {
     await db.execute('''
@@ -38,26 +25,34 @@ class DBHelper {
       $NAME TEXT NOT NULL,
       $SEVERITY TEXT NOT NULL,
       $DISEASE TEXT NOT NULL,
-      $CONFIDENCE DOUBLE NOT NULL,
+      $CONFIDENCE REAL NOT NULL,
       $DATE TEXT NOT NULL
     )
   ''');
   }
 
   Future<Photos> save(Photos image) async {
-    var dbClient = await db;
-    await dbClient.insert(TABLE, image.toMap());
+    var dbClient = await _db;
+    await dbClient!.transaction((txn) async {
+      await txn.rawInsert(
+        '''INSERT INTO $TABLE 
+           ($NAME, $SEVERITY, $DISEASE, $CONFIDENCE, $DATE) 
+           VALUES (?, ?, ?, ?, ?)''',
+        [
+          image.photoName,
+          image.severity,
+          image.diseaseName,
+          image.confidence_level,
+          image.createdAt.toIso8601String(),
+        ],
+      );
+    });
     return image;
-
-    // await dbClient.transaction((txn) async {
-    //   var query = "INSERT INTO $TABLE ($NAME, $DATE) VALUES ('${image.photoName}', '${image.createdAt}')";
-    //   return await txn.rawInsert(query);
-    // });
   }
 
   Future<List<Photos>> getPhotos() async {
-    var dbClient = await db;
-    List<Map> maps = await dbClient
+    var dbClient = await _db;
+    List<Map> maps = await dbClient!
         .query(TABLE, columns: [ID, NAME, SEVERITY, DISEASE, CONFIDENCE, DATE]);
     List<Photos> images = [];
     if (maps.isNotEmpty) {
@@ -69,7 +64,7 @@ class DBHelper {
   }
 
   Future close() async {
-    var dbClient = await db;
-    dbClient.close();
+    var dbClient = await _db;
+    dbClient!.close();
   }
 }

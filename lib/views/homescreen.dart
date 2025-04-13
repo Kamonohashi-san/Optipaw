@@ -64,49 +64,51 @@ class _HomeScreenState extends State<HomeScreen> {
         .pickImage(source: ImageSource.gallery)
         .then((imgFile) async {
       String imgString = Utility.base64String(await imgFile!.readAsBytes());
-
-      var imageMap = File(imgFile.path);
-
       setState(() {
-        filepath = imageMap;
+        print(imgString);
       });
-
-      String preprocessedPath = await preprocessImage(imgFile.path);
-
-      final diseaseResult =
-          await _tfliteservice.runDiseaseModel(preprocessedPath);
-
-      setState(() {
-        print(diseaseResult);
-        label = diseaseResult?.first['label'];
-        confidence = (diseaseResult?.first['confidence'] * 100);
-        images = imgFile.path;
-        // print(images);
-      });
-
-      await _tfliteservice.loadSeverityModel(_character);
-      final severityResult =
-          await _tfliteservice.runSeverityModel(preprocessedPath);
-
-      setState(() {
-        severity = severityResult?.first['label'];
-        print(severityResult);
-        goToPage(
-          context,
-          Results(
-            filePath: filepath,
-            label: label,
-            severity: severity,
-            confidence: confidence,
-            image: images,
-          ),
-          'leftToRightWithFade',
-        );
-      });
-
       Photos photo =
           Photos(imgString, severity, label, confidence, DateTime.now());
       dbHelper.save(photo);
+      // var imageMap = File(imgFile.path);
+
+      // setState(() {
+      //   filepath = imageMap;
+      // });
+
+      // String preprocessedPath = await preprocessImage(imgFile.path);
+
+      // final diseaseResult =
+      //     await _tfliteservice.runDiseaseModel(preprocessedPath);
+
+      // setState(() {
+      //   print(diseaseResult);
+      //   label = diseaseResult?.first['label'];
+      //   confidence = (diseaseResult?.first['confidence'] * 100);
+      //   images = imgFile.path;
+      //   // print(images);
+      // });
+
+      // await _tfliteservice.loadSeverityModel(_character);
+      // final severityResult =
+      //     await _tfliteservice.runSeverityModel(preprocessedPath);
+
+      // setState(() {
+      //   severity = severityResult?.first['label'];
+      //   print(severityResult);
+      //   goToPage(
+      //     context,
+      //     Results(
+      //       filePath: filepath,
+      //       label: label,
+      //       severity: severity,
+      //       confidence: confidence,
+      //       image: images,
+      //     ),
+      //     'leftToRightWithFade',
+      //   );
+      // });
+
       return null;
     });
   }
@@ -157,9 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
           'leftToRightWithFade',
         );
       });
-
-      Photos photo =
-          Photos(imgString, severity, label, confidence, DateTime.now());
+      Photos photo = Photos(imgString, DateTime.now());
       dbHelper.save(photo);
       return null;
     });
